@@ -4,6 +4,8 @@ const DATABASE_URL = process.env.DATABASE_URL
 	|| global.DATABASE_URL
 	|| 'postgres://amljugeg:VKJqP8bTColCw0p5UiNiaTqN8CK4DN8W@baasu.db.elephantsql.com:5432/amljugeg';
 
+// 'cryptic-gorge-43837'
+
 exports.DATABASE = {
   client: 'pg',
   connection: DATABASE_URL,

@@ -6,8 +6,6 @@ const router = express.Router();
 const { DATABASE } = require('../config');
 const knex = require('knex')(DATABASE);
 
-// var data = require('../db/dummy-data');
-
 /* ========== GET/READ ALL ITEMS ========== */
 router.get('/stories', (req, res) => {
   if (req.query.search) {
