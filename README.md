@@ -26,8 +26,8 @@ You have been hired to complete an API for a blog app. The previous developer ha
 
   > Note: remember to save the CREATE TABLE and INSERT INTO queries in a file so they can be easily run again later. Examples:
 
-      LOCAL HOST: psql -f ./projects/thinkful/blog-app/db/stories.sql -U dev -d blog-app
-      ELEPHANT SQL: psql -f /Users/samuelgould/projects/thinkful/blog-app/db/stories.sql postgres://amljugeg:VKJqP8bTColCw0p5UiNiaTqN8CK4DN8W@baasu.db.elephantsql.com:5432/amljugeg
+      LOCAL HOST: psql -f ./projects/thinkful/blog-app/db/query.sql -U dev -d blog-app
+      ELEPHANT SQL: psql -f /Users/samuelgould/projects/thinkful/blog-app/db/query.sql postgres://amljugeg:VKJqP8bTColCw0p5UiNiaTqN8CK4DN8W@baasu.db.elephantsql.com:5432/amljugeg
 
       
 
