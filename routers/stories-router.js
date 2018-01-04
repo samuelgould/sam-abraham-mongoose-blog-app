@@ -14,8 +14,9 @@ var data = require('../db/dummy-data');
 /* ========== GET/READ ALL ITEMS ========== */
 router.get('/stories', (req, res) => {
   if (req.query.search) {
-    const filtered = data.filter((obj) => obj.title.includes(req.query.search));
-    res.json(filtered);
+    knex.select('id', 'title', 'content')
+      .from('stories')
+      .then(result => res.json(result.filter((obj) => obj.title.includes(req.query.search))));
   } else {
     knex.select('id', 'title', 'content')
       .from('stories')
@@ -26,34 +27,35 @@ router.get('/stories', (req, res) => {
 /* ========== GET/READ SINGLE ITEMS ========== */
 router.get('/stories/:id', (req, res) => {
   const id = Number(req.params.id);
-  const item = data.find((obj) => obj.id === id);
-  res.json(item);
+  knex.select('id', 'title', 'content')
+    .from('stories')
+    .where('id', id)
+    .then(result => res.json(result));
 });
 
 /* ========== POST/CREATE ITEM ========== */
 router.post('/stories', (req, res) => {
-  const {title, content} = req.body;
-  
-  /***** Never Trust Users! *****/  
+  const { title, content } = req.body;
+  /***** Never Trust Users! *****/
   const newItem = {
-    id: data.nextVal++,
     title: title,
     content: content
   };
-  data.push(newItem);
-
-  res.location(`${req.originalUrl}/${newItem.id}`).status(201).json(newItem);
+  knex('stories')
+    .insert(newItem)
+    .returning(['id', 'title', 'content'])
+    .then(result => res.location(`${req.originalUrl}/${result[0].id}`).status(201).json(result));
 });
 
 /* ========== PUT/UPDATE A SINGLE ITEM ========== */
 router.put('/stories/:id', (req, res) => {
-  const {title, content} = req.body;
-  
+  const { title, content } = req.body;
+
   /***** Never Trust Users! *****/
-  
+
   const id = Number(req.params.id);
   const item = data.find((obj) => obj.id === id);
-  Object.assign(item, {title, content});
+  Object.assign(item, { title, content });
   res.json(item);
 });
 
