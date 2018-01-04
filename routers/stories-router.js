@@ -3,8 +3,8 @@
 const express = require('express');
 const router = express.Router();
 
-const { DATABASE } = require('./config');
-const knex = require('knex')({ DATABASE });
+const { DATABASE } = require('../config');
+const knex = require('knex')(DATABASE);
 
 var data = require('../db/dummy-data');
 
@@ -17,7 +17,9 @@ router.get('/stories', (req, res) => {
     const filtered = data.filter((obj) => obj.title.includes(req.query.search));
     res.json(filtered);
   } else {
-    res.json(data);
+    knex.select('id', 'title', 'content')
+      .from('stories')
+      .then(result => res.json(result));
   }
 });
 

@@ -18,21 +18,21 @@ You have been hired to complete an API for a blog app. The previous developer ha
   - [x] DELETE a story - should return status 204 with no content
 
 - Create database
-  - [ ] Create local Postgres database named `blog-app`
-  - [ ] Create a `stories` table with the following 3 columns:
+  - [x] Create local Postgres database named `blog-app`
+  - [x] Create a `stories` table with the following 3 columns:
     - `id`: an auto-incrementing integer
     - `title`: regular text. Required.
     - `content`: regular text. Can be blank.
 
   > Note: remember to save the CREATE TABLE and INSERT INTO queries in a file so they can be easily run again later. Examples:
 
-      psql -f ./query.sql -U <username> -d blog-app
-      postgres://<USERNAME>:<PASSWORD>@<SERVER:PORT>/<DATABASE>
+      psql -f ./projects/thinkful/blog-app/db/stories.sql -U dev -d blog-app
+      psql blog-app -U dev
 
 - Wire-up database to the endpoints. IOW, replace **dummy data** with real database calls.
-  - [ ] Add `knex` and `pg` to the project
-  - [ ] Update `config.js` with DB connection info
-  - [ ] Import `knex` and database config into the router file
+  - [x] Add `knex` and `pg` to the project
+  - [x] Update `config.js` with DB connection info
+  - [x] Import `knex` and database config into the router file
   - [ ] Update GET `/api/v1/stories` endpoint to use `knex.select()...`
   - [ ] Update GET `/api/v1/stories/:id` endpoint to use `knex.select()...`
   - [ ] Update POST `/api/v1/stories/` endpoint to use `knex.insert()...`
