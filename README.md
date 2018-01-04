@@ -27,7 +27,7 @@ You have been hired to complete an API for a blog app. The previous developer ha
   > Note: remember to save the CREATE TABLE and INSERT INTO queries in a file so they can be easily run again later. Examples:
 
       psql -f ./projects/thinkful/blog-app/db/stories.sql -U dev -d blog-app
-      psql blog-app -U dev
+      postgres://dev:ruggles@localhost:5432/blog-app
 
 - Wire-up database to the endpoints. IOW, replace **dummy data** with real database calls.
   - [x] Add `knex` and `pg` to the project
