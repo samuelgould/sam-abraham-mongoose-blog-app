@@ -41,7 +41,7 @@ router.post('/stories', (req, res) => {
   knex('stories')
     .insert(newItem)
     .returning(['id', 'title', 'content'])
-    .then(result => res.location(`${req.originalUrl}/${result[0].id}`).status(201).json(result));
+    .then(result => res.location(`${req.originalUrl}/${result[0].id}`).status(201).json(result[0]));
 });
 
 /* ========== PUT/UPDATE A SINGLE ITEM ========== */
@@ -59,7 +59,7 @@ router.put('/stories/:id', (req, res) => {
     })
     .where('id', id)
     .returning(['id','title', 'content'])
-    .then(result => res.json(result));
+    .then(result => res.json(result[0]));
 });
 
 /* ========== DELETE/REMOVE A SINGLE ITEM ========== */
