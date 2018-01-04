@@ -3,6 +3,9 @@
 const express = require('express');
 const router = express.Router();
 
+const { DATABASE } = require('./config');
+const knex = require('knex')({ DATABASE });
+
 var data = require('../db/dummy-data');
 
 // const { DATABASE } = require('../config');
