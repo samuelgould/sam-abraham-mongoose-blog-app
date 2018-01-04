@@ -26,23 +26,25 @@ You have been hired to complete an API for a blog app. The previous developer ha
 
   > Note: remember to save the CREATE TABLE and INSERT INTO queries in a file so they can be easily run again later. Examples:
 
-      psql -f ./projects/thinkful/blog-app/db/stories.sql -U dev -d blog-app
-      postgres://dev:ruggles@localhost:5432/blog-app
+      LOCAL HOST: psql -f ./projects/thinkful/blog-app/db/stories.sql -U dev -d blog-app
+      ELEPHANT SQL: psql -f /Users/samuelgould/projects/thinkful/blog-app/db/stories.sql postgres://amljugeg:VKJqP8bTColCw0p5UiNiaTqN8CK4DN8W@baasu.db.elephantsql.com:5432/amljugeg
+
+      
 
 - Wire-up database to the endpoints. IOW, replace **dummy data** with real database calls.
   - [x] Add `knex` and `pg` to the project
   - [x] Update `config.js` with DB connection info
   - [x] Import `knex` and database config into the router file
-  - [ ] Update GET `/api/v1/stories` endpoint to use `knex.select()...`
-  - [ ] Update GET `/api/v1/stories/:id` endpoint to use `knex.select()...`
-  - [ ] Update POST `/api/v1/stories/` endpoint to use `knex.insert()...`
-  - [ ] Update PUT `/api/v1/stories/:id` endpoint to use `knex.update()...`
-  - [ ] Update DELETE `/api/v1/stories/:id` endpoint to use `knex.del()...`
+  - [x] Update GET `/api/v1/stories` endpoint to use `knex.select()...`
+  - [x] Update GET `/api/v1/stories/:id` endpoint to use `knex.select()...`
+  - [x] Update POST `/api/v1/stories/` endpoint to use `knex.insert()...`
+  - [x] Update PUT `/api/v1/stories/:id` endpoint to use `knex.update()...`
+  - [x] Update DELETE `/api/v1/stories/:id` endpoint to use `knex.del()...`
 
 - Deploy to Heroku (see [Deploying to Heroku](https://courses.thinkful.com/node-001v5/project/1.3.5))
-  - [ ] Install Heroku CLI app, if necessary
-  - [ ] Create app on Heroku
-  - [ ] Update git remote to point to Heroku
-  - [ ] Push app to Heroku. (Note: app won't work yet)
-  - [ ] Create a production database on Elephant SQL. Use `query.sql` from earlier to easily create the database
+  - [x] Install Heroku CLI app, if necessary
+  - [x] Create app on Heroku
+  - [x] Update git remote to point to Heroku
+  - [x] Push app to Heroku. (Note: app won't work yet)
+  - [x] Create a production database on Elephant SQL. Use `query.sql` from earlier to easily create the database
   - [ ] Configure Heroku config vars to use `DATABASE_URL` and the Elephant SQL connection string  
