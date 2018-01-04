@@ -27,7 +27,7 @@ router.get('/stories/:id', (req, res) => {
   knex.select('id', 'title', 'content')
     .from('stories')
     .where('id', id)
-    .then(result => res.json(result));
+    .then(result => res.json(result[0]));
 });
 
 /* ========== POST/CREATE ITEM ========== */

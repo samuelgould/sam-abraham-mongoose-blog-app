@@ -6,11 +6,9 @@ const DATABASE_URL = process.env.DATABASE_URL
 
 exports.DATABASE = {
   client: 'pg',
-  connection: {
-    database: DATABASE_URL,
-    pool: { min: 0, max: 2 },
-    debug: true
-  },
+  connection: DATABASE_URL,
+  pool: { min: 0, max: 2 },
+  debug: true
 };
 
 exports.PORT = process.env.PORT || 8080; 
