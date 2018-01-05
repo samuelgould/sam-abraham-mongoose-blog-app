@@ -37,10 +37,11 @@ router.get('/stories/:id', (req, res, next) => {
     return next(err);
   }
 
-  knex.first('id', 'title', 'content')
-    .from('stories')
-    .where('id', id)
-    .then(result => {
+  knex('stories')
+    .join('authors', 'authors.id', '=', 'stories.author_id')
+    .select('stories.id', 'authors.username', 'stories.title', 'stories.content')
+    .where('stories.id', id)
+    .then(([result]) => {
       if (result) {
         res.json(result);
       } else {
@@ -125,7 +126,7 @@ router.delete('/stories/:id', (req, res, next) => {
   knex('stories')
     .where('id', id)
     .del()
-    .then(result => { 
+    .then(result => {
       if (result) {
         res.status(204).end();
       } else {
