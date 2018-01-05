@@ -9,12 +9,13 @@ const knex = require('knex')(DATABASE);
 /* ========== GET/READ ALL ITEMS ========== */
 router.get('/stories', (req, res, next) => {
   if (req.query.search) {
-    knex.select('id', 'title', 'content')
+    knex.select('id', 'author_id', 'title', 'content')
       .from('stories')
       .then(result => res.json(result.filter((obj) => obj.title.includes(req.query.search))));
   } else {
-    knex.select('id', 'title', 'content')
-      .from('stories')
+    knex('stories')
+      .join('authors', 'authors.id', '=', 'stories.author_id')
+      .select('stories.id', 'authors.username', 'stories.title', 'stories.content')
       .then(result => {
         if (result) {
           res.json(result);
