@@ -6,6 +6,21 @@ const router = express.Router();
 const { DATABASE } = require('../config');
 const knex = require('knex')(DATABASE);
 
+/* ========== GET/READ ALL AUTHORS ========== */
+
+router.get('/authors', (req, res, next) => {
+  knex.first('id','username','email')
+    .from('authors')
+    .then(result => {
+      if (result) {
+        res.json(result);
+      } else {
+        next();
+      }
+    })
+    .catch(next);
+});
+
 /* ========== GET/READ ALL ITEMS ========== */
 router.get('/stories', (req, res, next) => {
   if (req.query.search) {
@@ -15,7 +30,7 @@ router.get('/stories', (req, res, next) => {
   } else {
     knex('stories')
       .join('authors', 'authors.id', '=', 'stories.author_id')
-      .select('stories.id', 'authors.username', 'stories.title', 'stories.content')
+      .select('stories.id', 'stories.title', 'stories.content', 'authors.username as authorName', 'authors.id as authorId')
       .then(result => {
         if (result) {
           res.json(result);
@@ -39,7 +54,7 @@ router.get('/stories/:id', (req, res, next) => {
 
   knex('stories')
     .join('authors', 'authors.id', '=', 'stories.author_id')
-    .select('stories.id', 'authors.username', 'stories.title', 'stories.content')
+    .select('stories.id', 'stories.title', 'stories.content', 'authors.username as authorName', 'authors.id as authorId')
     .where('stories.id', id)
     .then(([result]) => {
       if (result) {
