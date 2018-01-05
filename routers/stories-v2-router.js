@@ -6,10 +6,8 @@ const router = express.Router();
 const { DATABASE } = require('../config');
 const knex = require('knex')(DATABASE);
 
-// var data = require('../db/dummy-data');
-
 /* ========== GET/READ ALL ITEMS ========== */
-router.get('/stories', (req, res) => {
+router.get('/stories', (req, res, next) => {
   if (req.query.search) {
     knex.select('id', 'title', 'content')
       .from('stories')
@@ -17,23 +15,50 @@ router.get('/stories', (req, res) => {
   } else {
     knex.select('id', 'title', 'content')
       .from('stories')
-      .then(result => res.json(result));
+      .then(result => {
+        if (result) {
+          res.json(result);
+        } else {
+          next();
+        }
+      })
+      .catch(next);
   }
 });
 
 /* ========== GET/READ SINGLE ITEMS ========== */
-router.get('/stories/:id', (req, res) => {
+router.get('/stories/:id', (req, res, next) => {
   const id = Number(req.params.id);
-  knex.select('id', 'title', 'content')
+
+  if (isNaN(id)) {
+    const err = new Error('Id must be a valid integer');
+    err.status = 400;
+    return next(err);
+  }
+
+  knex.first('id', 'title', 'content')
     .from('stories')
     .where('id', id)
-    .then(result => res.json(result[0]));
+    .then(result => {
+      if (result) {
+        res.json(result);
+      } else {
+        next();
+      }
+    })
+    .catch(next);
 });
 
 /* ========== POST/CREATE ITEM ========== */
-router.post('/stories', (req, res) => {
+router.post('/stories', (req, res, next) => {
   const { title, content } = req.body;
-  /***** Never Trust Users! *****/
+
+  if (!req.body.title) {
+    const err = new Error('Request must contain a title');
+    err.status = 400;
+    return next(err);
+  }
+
   const newItem = {
     title: title,
     content: content
@@ -41,16 +66,33 @@ router.post('/stories', (req, res) => {
   knex('stories')
     .insert(newItem)
     .returning(['id', 'title', 'content'])
-    .then(result => res.location(`${req.originalUrl}/${result[0].id}`).status(201).json(result[0]));
+    .then(([result]) => {
+      if (result) {
+        res.location(`${req.originalUrl}/${result.id}`).status(201).json(result);
+      } else {
+        next();
+      }
+    })
+    .catch(next);
 });
 
 /* ========== PUT/UPDATE A SINGLE ITEM ========== */
-router.put('/stories/:id', (req, res) => {
+router.put('/stories/:id', (req, res, next) => {
   const { title, content } = req.body;
-
+  const id = Number(req.params.id);
   /***** Never Trust Users! *****/
 
-  const id = Number(req.params.id);
+  if (isNaN(id)) {
+    const err = new Error('Id must be a valid integer');
+    err.status = 400;
+    return next(err);
+  }
+
+  if (!req.body.title) {
+    const err = new Error('Request must contain a title');
+    err.status = 400;
+    return next(err);
+  }
 
   knex('stories')
     .update({
@@ -58,18 +100,38 @@ router.put('/stories/:id', (req, res) => {
       content: content
     })
     .where('id', id)
-    .returning(['id','title', 'content'])
-    .then(result => res.json(result[0]));
+    .returning(['id', 'title', 'content'])
+    .then(([result]) => {
+      if (result) {
+        res.json(result);
+      } else {
+        next();
+      }
+    })
+    .catch(next);
 });
 
 /* ========== DELETE/REMOVE A SINGLE ITEM ========== */
-router.delete('/stories/:id', (req, res) => {
+router.delete('/stories/:id', (req, res, next) => {
   const id = Number(req.params.id);
+
+  if (isNaN(id)) {
+    const err = new Error('Id must be a valid integer');
+    err.status = 400;
+    return next(err);
+  }
 
   knex('stories')
     .where('id', id)
     .del()
-    .then(res.status(204).end());
+    .then(result => { 
+      if (result) {
+        res.status(204).end();
+      } else {
+        next();
+      }
+    })
+    .catch(next);
 });
 
 module.exports = router;

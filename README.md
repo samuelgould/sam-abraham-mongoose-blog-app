@@ -47,4 +47,4 @@ You have been hired to complete an API for a blog app. The previous developer ha
   - [x] Update git remote to point to Heroku
   - [x] Push app to Heroku. (Note: app won't work yet)
   - [x] Create a production database on Elephant SQL. Use `query.sql` from earlier to easily create the database
-  - [ ] Configure Heroku config vars to use `DATABASE_URL` and the Elephant SQL connection string  
+  - [x] Configure Heroku config vars to use `DATABASE_URL` and the Elephant SQL connection string  
