@@ -22,10 +22,10 @@ router.get('/stories', (req, res) => {
 /* ========== GET/READ SINGLE ITEMS ========== */
 router.get('/stories/:id', (req, res) => {
   const id = Number(req.params.id);
-  knex.select('id', 'title', 'content')
+  knex.first('id', 'title', 'content')
     .from('stories')
     .where('id', id)
-    .then(result => res.json(result[0]));
+    .then(result => res.json(result));
 });
 
 /* ========== POST/CREATE ITEM ========== */
@@ -39,7 +39,7 @@ router.post('/stories', (req, res) => {
   knex('stories')
     .insert(newItem)
     .returning(['id', 'title', 'content'])
-    .then(result => res.location(`${req.originalUrl}/${result[0].id}`).status(201).json(result[0]));
+    .then(([result]) => res.location(`${req.originalUrl}/${result.id}`).status(201).json(result));
 });
 
 /* ========== PUT/UPDATE A SINGLE ITEM ========== */
@@ -57,7 +57,7 @@ router.put('/stories/:id', (req, res) => {
     })
     .where('id', id)
     .returning(['id','title', 'content'])
-    .then(result => res.json(result[0]));
+    .then(([result]) => res.json(result));
 });
 
 /* ========== DELETE/REMOVE A SINGLE ITEM ========== */
