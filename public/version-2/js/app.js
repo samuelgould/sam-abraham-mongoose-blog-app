@@ -56,14 +56,14 @@ const renderDetail = function (store) {
 
 const render = function (store) {
   switch (store.view) {
-    case 'list': renderList(store);
-      break;
-    case 'detail': renderDetail(store);
-      break;
-    case 'edit': renderEdit(store);
-      break;
-    case 'create': renderCreate(store); //new condition for the "create" view
-      break;
+  case 'list': renderList(store);
+    break;
+  case 'detail': renderDetail(store);
+    break;
+  case 'edit': renderEdit(store);
+    break;
+  case 'create': renderCreate(store); //new condition for the "create" view
+    break;
   }
 
   renderPage(store);
@@ -86,6 +86,7 @@ $(() => {
       .then(response => {
         store.insert(response);
         store.view = 'detail';
+        el.find('[name=title], [name=content], [name=author]').val('');
         render(store);
       }).catch(err => {
         console.error(err);

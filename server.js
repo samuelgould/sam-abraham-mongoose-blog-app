@@ -11,7 +11,7 @@ const { PORT } = require('./config');
 const app = express();
 
 app.use(morgan('common'));
-app.use(express.static(path.join(__dirname, 'public/version-1')));
+app.use(express.static(path.join(__dirname, 'public/version-2')));
 
 app.use(bodyParser.json());
 

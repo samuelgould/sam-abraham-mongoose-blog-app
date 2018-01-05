@@ -9,7 +9,7 @@ const knex = require('knex')(DATABASE);
 /* ========== GET/READ ALL AUTHORS ========== */
 
 router.get('/authors', (req, res, next) => {
-  knex.first('id','username','email')
+  knex.select('id', 'username', 'email')
     .from('authors')
     .then(result => {
       if (result) {
@@ -68,7 +68,7 @@ router.get('/stories/:id', (req, res, next) => {
 
 /* ========== POST/CREATE ITEM ========== */
 router.post('/stories', (req, res, next) => {
-  const { title, content } = req.body;
+  const { title, content, author_id } = req.body;
 
   if (!req.body.title) {
     const err = new Error('Request must contain a title');
@@ -78,14 +78,22 @@ router.post('/stories', (req, res, next) => {
 
   const newItem = {
     title: title,
-    content: content
+    content: content,
+    author_id: author_id
   };
+
   knex('stories')
     .insert(newItem)
-    .returning(['id', 'title', 'content'])
+    .returning(['id', 'title', 'content', 'author_id'])
     .then(([result]) => {
       if (result) {
-        res.location(`${req.originalUrl}/${result.id}`).status(201).json(result);
+        knex('stories')
+          .join('authors', 'authors.id', '=', 'stories.author_id')
+          .where('stories.id', result.id)
+          .select('stories.id', 'stories.title', 'stories.content', 'authors.username as authorName', 'authors.id as authorId')
+          .then(([modifiedResult]) => {
+            res.location(`${req.originalUrl}/${modifiedResult.id}`).status(201).json(modifiedResult);
+          });
       } else {
         next();
       }
@@ -95,7 +103,7 @@ router.post('/stories', (req, res, next) => {
 
 /* ========== PUT/UPDATE A SINGLE ITEM ========== */
 router.put('/stories/:id', (req, res, next) => {
-  const { title, content } = req.body;
+  const { title, content, author_id } = req.body;
   const id = Number(req.params.id);
   /***** Never Trust Users! *****/
 
@@ -114,13 +122,17 @@ router.put('/stories/:id', (req, res, next) => {
   knex('stories')
     .update({
       title: title,
-      content: content
+      content: content,
+      author_id: author_id
     })
-    .where('id', id)
-    .returning(['id', 'title', 'content'])
+    .returning(['id', 'title', 'content', 'author_id'])
     .then(([result]) => {
       if (result) {
-        res.json(result);
+        knex('stories')
+          .join('authors', 'authors.id', '=', 'stories.author_id')
+          .where('stories.id', result.id)
+          .select(['stories.id', 'stories.title', 'stories.content', 'authors.username as authorName', 'authors.id as authorId'])
+          .then(([modifiedResult]) => res.json(modifiedResult));
       } else {
         next();
       }
