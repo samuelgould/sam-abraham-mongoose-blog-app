@@ -125,6 +125,7 @@ router.put('/stories/:id', (req, res, next) => {
       content: content,
       author_id: author_id
     })
+    .where('id', id)
     .returning(['id', 'title', 'content', 'author_id'])
     .then(([result]) => {
       if (result) {
