@@ -20,12 +20,13 @@ router.get('/stories', (req, res) => {
 });
 
 /* ========== GET/READ SINGLE ITEMS ========== */
-router.get('/stories/:id', (req, res) => {
+router.get('/stories/:id', (req, res, next) => {
   const id = Number(req.params.id);
   knex.first('id', 'title', 'content')
     .from('stories')
     .where('id', id)
-    .then(result => res.json(result));
+    .then(result => res.json(result))
+    .catch(next);
 });
 
 /* ========== POST/CREATE ITEM ========== */
