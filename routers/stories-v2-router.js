@@ -87,17 +87,20 @@ router.post('/stories', (req, res, next) => {
     .returning(['id', 'title', 'content', 'author_id'])
     .then(([result]) => {
       if (result) {
-        knex('stories')
+        return knex('stories')
           .join('authors', 'authors.id', '=', 'stories.author_id')
           .where('stories.id', result.id)
-          .select('stories.id', 'stories.title', 'stories.content', 'authors.username as authorName', 'authors.id as authorId')
-          .then(([modifiedResult]) => {
-            res.location(`${req.originalUrl}/${modifiedResult.id}`).status(201).json(modifiedResult);
-          });
+          .select('stories.id', 'stories.title', 'stories.content', 'authors.username as authorName', 'authors.id as authorId');
       } else {
         next();
       }
     })
+    .then(([modifiedResult]) => { 
+      if (modifiedResult) {
+        res.location(`${req.originalUrl}/${modifiedResult.id}`).status(201).json(modifiedResult);
+      } else {
+        next();
+      }})
     .catch(next);
 });
 
@@ -129,15 +132,20 @@ router.put('/stories/:id', (req, res, next) => {
     .returning(['id', 'title', 'content', 'author_id'])
     .then(([result]) => {
       if (result) {
-        knex('stories')
+        return knex('stories')
           .join('authors', 'authors.id', '=', 'stories.author_id')
           .where('stories.id', result.id)
-          .select(['stories.id', 'stories.title', 'stories.content', 'authors.username as authorName', 'authors.id as authorId'])
-          .then(([modifiedResult]) => res.json(modifiedResult));
+          .select(['stories.id', 'stories.title', 'stories.content', 'authors.username as authorName', 'authors.id as authorId']);
       } else {
         next();
       }
     })
+    .then(([modifiedResult]) => { 
+      if (modifiedResult) {
+        res.json(modifiedResult);
+      } else {
+        next();
+      }})
     .catch(next);
 });
 
