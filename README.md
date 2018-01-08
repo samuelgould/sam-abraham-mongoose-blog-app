@@ -41,6 +41,8 @@ You have been hired to complete an API for a blog app. The previous developer ha
   - [x] Update PUT `/api/v1/stories/:id` endpoint to use `knex.update()...`
   - [x] Update DELETE `/api/v1/stories/:id` endpoint to use `knex.del()...`
 
+- GET request to authors endpoint
+
 - Deploy to Heroku (see [Deploying to Heroku](https://courses.thinkful.com/node-001v5/project/1.3.5))
   - [x] Install Heroku CLI app, if necessary
   - [x] Create app on Heroku
