@@ -32,6 +32,30 @@ router.get('/posts/:id', (req, res) => {
   });
 });
 
+router.post('/posts', (req, res) => {
+  const requiredFields = ['title','content','author'];
+
+  for(let i=0; i < requiredFields.length;  i++){
+    let field = requiredFields[i];
+    if(!(field in req.body)){
+      const message = `required field ${field} is missing in body`;
+      res.sendStatus(400).send(message);
+    }
+  }
+    
+  const {title, content, author} = req.body;
+  console.log('About to create a record')
+  Post.create({
+    title: title, 
+    content: content, 
+    author: author
+    })
+  .then(result => {
+    console.log('HEY from Then');
+    result.serialize();
+  });
+});
+
 /* ========== GET/READ ALL AUTHORS ========== */
 
 // router.get('/authors', (req, res, next) => {
