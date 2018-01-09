@@ -23,6 +23,15 @@ router.get('/posts', (req, res) => {
       res.status(500).json({ message: err.message });
     });
 });
+
+router.get('/posts/:id', (req, res) => {
+  Post.findById(req.params.id)
+  .then(result => {
+    console.log(`Here is the ID given to me: ${req.params.id}`);
+   res.json(result.serialize()); 
+  });
+});
+
 /* ========== GET/READ ALL AUTHORS ========== */
 
 // router.get('/authors', (req, res, next) => {
