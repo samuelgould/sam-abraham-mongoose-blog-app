@@ -29,7 +29,8 @@ router.get('/posts/:id', (req, res) => {
     .then(result => {
       console.log(`Here is the ID given to me: ${req.params.id}`);
       res.json(result.serialize()); 
-    });
+    })
+    .catch(err => res.status(500).json({ message: 'Internal server error'}));
 });
 
 router.post('/posts', (req, res) => {
@@ -53,7 +54,38 @@ router.post('/posts', (req, res) => {
     .then(result => {
       console.log('HEY from Then');
       res.json(result.serialize());
-    });
+    })
+    .catch(err => res.status(500).json({ message: 'Internal server error'}));
+});
+
+router.put('/posts/:id', (req, res) => {
+
+  if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
+    const message = `Request path id (${req.params.id}) and request body id (${req.body.id}) must match`;
+    console.error(message);
+    return res.status(400).send(message);
+  }
+  
+  const updateToPost = {};
+  const updateableFields = ['title', 'content', 'author'];
+
+  updateableFields.forEach(field => {
+    if (field in req.body) {
+      updateToPost[field] = req.body[field];
+    }
+  });
+
+  Post
+    .findandUpdateById(req.params.id, { $set: updateToPost })
+    .then(result => res.status(204).end())
+    .catch(err => res.status(500).json({ message: 'Internal server error'}));
+});
+
+router.delete('/posts/:id', (req, res) => {
+  Post
+    .findByIdAndRemove(req.params.id)
+    .then(result => res.status(201).end())
+    .catch(err => res.status(500).json({ message: 'Internal server error'}));
 });
 
 /* ========== GET/READ ALL AUTHORS ========== */
