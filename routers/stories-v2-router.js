@@ -26,10 +26,10 @@ router.get('/posts', (req, res) => {
 
 router.get('/posts/:id', (req, res) => {
   Post.findById(req.params.id)
-  .then(result => {
-    console.log(`Here is the ID given to me: ${req.params.id}`);
-   res.json(result.serialize()); 
-  });
+    .then(result => {
+      console.log(`Here is the ID given to me: ${req.params.id}`);
+      res.json(result.serialize()); 
+    });
 });
 
 router.post('/posts', (req, res) => {
@@ -44,16 +44,16 @@ router.post('/posts', (req, res) => {
   }
     
   const {title, content, author} = req.body;
-  console.log('About to create a record')
+  console.log('About to create a record');
   Post.create({
     title: title, 
     content: content, 
     author: author
-    })
-  .then(result => {
-    console.log('HEY from Then');
-    result.serialize();
-  });
+  })
+    .then(result => {
+      console.log('HEY from Then');
+      res.json(result.serialize());
+    });
 });
 
 /* ========== GET/READ ALL AUTHORS ========== */
