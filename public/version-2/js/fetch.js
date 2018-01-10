@@ -25,10 +25,10 @@ function normalizeResponseErrors(res) {
   }
   return res;
 }
-//new API route has changed to `/api/v2/stories/`
+//new API route has changed to `/api/v2/posts/`
 const api = {
   search: function (query = {}) {
-    const url = buildUrl('/api/v2/stories/', query);
+    const url = buildUrl('/api/v2/posts/', query);
 
     return fetch(url, {
       method: 'GET',
@@ -39,7 +39,7 @@ const api = {
       .then(res => res.json());
   },
   details: function (id) {
-    const url = buildUrl(`/api/v2/stories/${id}`);
+    const url = buildUrl(`/api/v2/posts/${id}`);
 
     return fetch(url, {
       method: 'GET',
@@ -50,7 +50,7 @@ const api = {
       .then(res => res.json());
   },
   create: function (document) {
-    const url = buildUrl('/api/v2/stories/');
+    const url = buildUrl('/api/v2/posts/');
 
     return fetch(url, {
       method: 'POST',
@@ -63,7 +63,7 @@ const api = {
       .then(res => res.json());
   },
   update: function (document) {
-    const url = buildUrl(`/api/v2/stories/${document.id}`);
+    const url = buildUrl(`/api/v2/posts/${document.id}`);
 
     return fetch(url, {
       method: 'PUT',
@@ -76,7 +76,7 @@ const api = {
       .then(res => res.json());
   },
   remove: function (id) {
-    const url = buildUrl(`/api/v2/stories/${id}`);
+    const url = buildUrl(`/api/v2/posts/${id}`);
 
     return fetch(url, {
       method: 'DELETE',
@@ -87,16 +87,16 @@ const api = {
       .then(res => res.text());
   },
   //new getAuthorsList is a new api call
-  getAuthors: function () {
-    const url = buildUrl('/api/v2/authors');
+//   getAuthors: function () {
+//     const url = buildUrl('/api/v2/authors');
 
-    return fetch(url, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json'
-      }
-    }).then(normalizeResponseErrors)
-      .then(res => res.json());
-  }
+//     return fetch(url, {
+//       method: 'GET',
+//       headers: {
+//         'Accept': 'application/json'
+//       }
+//     }).then(normalizeResponseErrors)
+//       .then(res => res.json());
+//   }
 
 };
